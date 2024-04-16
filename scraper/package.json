@@ -1,0 +1,47 @@
+{
+  "name": "mangaland-scraper",
+  "version": "0.2.0",
+  "description": "The scraper for the mangaland project",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "eslint-fix": "eslint --fix .",
+    "build": "tsup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkioSarkiz/mangaland-project.git"
+  },
+  "keywords": [
+    "mangaland",
+    "manga",
+    "reader",
+    "manga",
+    "api"
+  ],
+  "author": "Dmytro Laptiev <akiosarkiz@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/AkioSarkiz/mangaland-project/issues"
+  },
+  "homepage": "https://github.com/AkioSarkiz/mangaland-project#readme",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
+    "eslint": "^8.57.0",
+    "tsup": "^8.0.2"
+  },
+  "volta": {
+    "node": "20.12.1",
+    "npm": "10.5.1"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^1.7.0",
+    "typescript": "^5.4.4",
+    "vitest": "^1.4.0"
+  }
+}
