@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import MangaCard from "../components/MangaCard";
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import axios from "axios";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader() {
   const [{ data: dataFeed1 }, { data: dataFeed2 }] = await Promise.all([
     axios.get("http://localhost:3000/feed"),
     axios.get("http://localhost:3000/feed?p=2"),
@@ -14,6 +14,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 const IndexPage: React.FC = () => {
+  // @ts-ignore
   const { feed: initFeed, nextPage: initNextPage } = useLoaderData();
   const [nextPage, setNextPage] = useState<number | null>(initNextPage);
   const [feed, setFeed] = useState(initFeed);

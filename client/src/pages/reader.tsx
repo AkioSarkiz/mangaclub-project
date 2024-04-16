@@ -30,7 +30,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   );
 
   const reversedChapters = mangaDetails.chapters.reverse();
-  const currentManga = reversedChapters.findIndex((chapter) =>
+  const currentManga = reversedChapters.findIndex((chapter: any) =>
     chapter.link.includes(params.chapter_id)
   );
 
@@ -96,7 +96,7 @@ const ReaderPage = () => {
             value={frameIndex}
             onChange={(e) => setFrameIndex(Number(e.target.value))}
           >
-            {mangaFrames.map((frame, index) => (
+            {mangaFrames.map((_, index) => (
               <option key={index} disabled={index === frameIndex} value={index}>
                 {index + 1} of {mangaFrames.length}
               </option>

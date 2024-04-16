@@ -3,11 +3,11 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { isDrawerOpened } from "../atoms/drawer";
 
-interface DrawerListItem {
-  label: string;
-  to: { name?: string; path?: string };
-  external?: boolean;
-}
+// interface DrawerListItem {
+//   label: string;
+//   to: { name?: string; path?: string };
+//   external?: boolean;
+// }
 
 const Drawer: React.FC = () => {
   const [isChecked, setIsChecked] = useAtom(isDrawerOpened);
@@ -62,7 +62,7 @@ const Drawer: React.FC = () => {
                 </a>
               ) : (
                 <Link
-                  to={listItem.to}
+                  to={listItem.to.path || ""}
                   replace={location.pathname === listItem.to.path}
                 >
                   {listItem.label}
