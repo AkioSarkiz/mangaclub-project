@@ -22,11 +22,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
   let nextChapterId: number | null = null;
 
   const { data: mangaDetails } = await axios.get(
-    `http://localhost:3000/manga/${params.manga_id}`
+    `${import.meta.env.VITE_BACKEND_HOST}/manga/${params.manga_id}`
   );
 
   const { data } = await axios.get(
-    `http://localhost:3000/manga/${params.manga_id}/chapters/${params.chapter_id}`
+    `${import.meta.env.VITE_BACKEND_HOST}/manga/${params.manga_id}/chapters/${params.chapter_id}`
   );
 
   const reversedChapters = mangaDetails.chapters.reverse();

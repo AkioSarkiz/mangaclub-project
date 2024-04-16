@@ -19,7 +19,7 @@ function loadImage(url: string) {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { data } = await axios.get(
-    `http://localhost:3000/manga/${params.manga_id}`
+    `${import.meta.env.VITE_BACKEND_HOST}/manga/${params.manga_id}`
   );
 
   // prefetch cover

@@ -5,8 +5,8 @@ import axios from "axios";
 
 export async function loader() {
   const [{ data: dataFeed1 }, { data: dataFeed2 }] = await Promise.all([
-    axios.get("http://localhost:3000/feed"),
-    axios.get("http://localhost:3000/feed?p=2"),
+    axios.get(`${import.meta.env.VITE_BACKEND_HOST}/feed`),
+    axios.get(`${import.meta.env.VITE_BACKEND_HOST}/feed?p=2`),
   ]);
   const nextPage = 3;
 
@@ -30,7 +30,7 @@ const IndexPage: React.FC = () => {
 
     try {
       const { data } = await axios.get(
-        `http://localhost:3000/feed?p=${nextPage}`
+        `${import.meta.env.VITE_BACKEND_HOST}/feed?p=${nextPage}`
       );
 
       if (!data?.length) {
