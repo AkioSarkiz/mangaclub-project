@@ -1,14 +1,17 @@
-import {
-  LoaderFunctionArgs,
-  useLoaderData,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import MFloat from "../components/Float";
+"use client";
+
+import MFloat from "@/components/Float";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffectOnce } from "react-use";
 
-function loadImage(url: string) {
+interface Params {
+  manga_id: string;
+  chapter_id: string;
+}
+
+const loadImage = (url: string) => {
   return new Promise((resolve) => {
     const image = new Image();
     image.addEventListener("load", () => {
@@ -16,17 +19,17 @@ function loadImage(url: string) {
     });
     image.src = url;
   });
-}
+};
 
-export async function loader({ params }: LoaderFunctionArgs) {
+async function getData({ params }: { params: Params }) {
   let nextChapterId: number | null = null;
 
   const { data: mangaDetails } = await axios.get(
-    `${import.meta.env.VITE_BACKEND_HOST}/manga/${params.manga_id}`
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}`
   );
 
   const { data } = await axios.get(
-    `${import.meta.env.VITE_BACKEND_HOST}/manga/${params.manga_id}/chapters/${params.chapter_id}`
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}/chapters/${params.chapter_id}`
   );
 
   const reversedChapters = mangaDetails.chapters.reverse();
@@ -43,14 +46,36 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { mangaFrames: data, nextChapterId };
 }
 
-const ReaderPage = () => {
-  const { manga_id, chapter_id } = useParams();
-  const navigate = useNavigate();
+const ReaderPage = ({ params }: { params: Params }) => {
   const [frameIndex, setFrameIndex] = useState(0);
-  const { mangaFrames, nextChapterId } = useLoaderData() as {
-    mangaFrames: { url: string }[];
-    nextChapterId: number | null;
+  const [mangaFrames, setMangaFrames] = useState<{ url: string }[]>([]);
+  const [nextChapterId, setNextChapterId] = useState<number | null>(null);
+
+  const router = useRouter();
+
+  const handleNextFrame = () => {
+    if (frameIndex + 1 < mangaFrames.length) {
+      setFrameIndex(frameIndex + 1);
+
+      // reset scroll position
+      if (typeof window !== "undefined") {
+        window.scrollTo(0, 0);
+      }
+
+      return;
+    }
+
+    router.push(
+      nextChapterId && nextChapterId !== Number(params.chapter_id)
+        ? `/reader/${params.manga_id}/${nextChapterId}`
+        : `/manga/${params.manga_id}`
+    );
   };
+
+  // reset frame index when changing chapter
+  useEffect(() => {
+    setFrameIndex(0);
+  }, [params]);
 
   // preload all images
   useEffect(() => {
@@ -64,26 +89,17 @@ const ReaderPage = () => {
     });
   }, [mangaFrames]);
 
-  const handleNextFrame = () => {
-    if (frameIndex + 1 < mangaFrames.length) {
-      setFrameIndex(frameIndex + 1);
-      return;
-    }
+  // fetch data
+  useEffectOnce(() => {
+    getData({ params }).then(({ mangaFrames, nextChapterId }) => {
+      setMangaFrames(mangaFrames);
+      setNextChapterId(nextChapterId);
+    });
+  });
 
-    navigate(
-      nextChapterId && nextChapterId !== Number(chapter_id)
-        ? `/reader/${manga_id}/${nextChapterId}`
-        : `/manga/${manga_id}`,
-
-      {
-        state: {},
-      }
-    );
-  };
-
-  useEffect(() => {
-    setFrameIndex(0);
-  }, [manga_id, chapter_id]);
+  if (!nextChapterId) {
+    return <div>loading...</div>;
+  }
 
   return (
     <>

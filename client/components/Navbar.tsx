@@ -1,13 +1,10 @@
+"use client";
+
 import React from "react";
-import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
-import { isDrawerOpened as isDrawerOpenedAtom } from "../atoms/drawer";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+import { isDrawerOpened as isDrawerOpenedAtom } from "@/atoms/drawer";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 const Navbar: React.FC = () => {
   const title = "Mangaland";
@@ -36,8 +33,8 @@ const Navbar: React.FC = () => {
         </button>
       </div>
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">
-          {title}
+        <Link href="/" className="btn btn-ghost text-xl">
+          <img src="/android-chrome-192x192.png" alt={title} className="h-8" />
         </Link>
       </div>
       <div className="flex">

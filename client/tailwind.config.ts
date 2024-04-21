@@ -1,6 +1,11 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
 
   theme: {
     container: {
@@ -23,3 +28,4 @@ export default {
     // themeRoot: ":root", // The element that receives theme color CSS variables
   },
 };
+export default config;

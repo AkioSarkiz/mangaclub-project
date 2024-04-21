@@ -1,7 +1,10 @@
+"use client";
+
 import { useAtom } from "jotai";
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
 import { isDrawerOpened } from "../atoms/drawer";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // interface DrawerListItem {
 //   label: string;
@@ -11,7 +14,7 @@ import { isDrawerOpened } from "../atoms/drawer";
 
 const Drawer: React.FC = () => {
   const [isChecked, setIsChecked] = useAtom(isDrawerOpened);
-  const location = useLocation();
+  const pathname = usePathname();
 
   const list = React.useMemo(
     () => {
@@ -62,8 +65,8 @@ const Drawer: React.FC = () => {
                 </a>
               ) : (
                 <Link
-                  to={listItem.to.path || ""}
-                  replace={location.pathname === listItem.to.path}
+                  href={listItem.to.path || ""}
+                  replace={pathname === listItem.to.path}
                 >
                   {listItem.label}
                 </Link>

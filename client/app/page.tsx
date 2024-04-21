@@ -1,26 +1,32 @@
-import React, { useState } from "react";
-import MangaCard from "../components/MangaCard";
-import { useLoaderData } from "react-router-dom";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import MangaCard from "@/components/MangaCard";
 import axios from "axios";
 
-export async function loader() {
+async function getData() {
   const [{ data: dataFeed1 }, { data: dataFeed2 }] = await Promise.all([
-    axios.get(`${import.meta.env.VITE_BACKEND_HOST}/feed`),
-    axios.get(`${import.meta.env.VITE_BACKEND_HOST}/feed?p=2`),
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/feed`),
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/feed?p=2`),
   ]);
   const nextPage = 3;
 
   return { feed: [...dataFeed1, ...dataFeed2], nextPage };
 }
 
-const IndexPage: React.FC = () => {
-  // @ts-ignore
-  const { feed: initFeed, nextPage: initNextPage } = useLoaderData();
-  const [nextPage, setNextPage] = useState<number | null>(initNextPage);
-  const [feed, setFeed] = useState(initFeed);
+const IndexPage = () => {
+  const [nextPage, setNextPage] = useState<number | null>(null);
+  const [feed, setFeed] = useState<any>(null);
   const [loadMoreButton, setLoadMoreButton] = useState({
     isDisabled: false,
   });
+
+  useEffect(() => {
+    getData().then(({ feed: dataFeed, nextPage: dataNextPage }) => {
+      setFeed(dataFeed);
+      setNextPage(dataNextPage);
+    });
+  }, []);
 
   const loadMore = async () => {
     setLoadMoreButton({
@@ -30,7 +36,7 @@ const IndexPage: React.FC = () => {
 
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_HOST}/feed?p=${nextPage}`
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/feed?p=${nextPage}`
       );
 
       if (!data?.length) {
@@ -52,7 +58,7 @@ const IndexPage: React.FC = () => {
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mx-4 md:mx-0">
-        {feed.map((feedItem: any) => (
+        {feed && feed.map((feedItem: any) => (
           <MangaCard manga={feedItem} key={feedItem.link} />
         ))}
       </div>

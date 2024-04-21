@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from 'next/link'
 
 interface Manga {
   id: number;
@@ -18,7 +18,7 @@ const MangaCard = ({ manga }: Props) => {
   return (
     <div className="text-center">
       <div>
-        <Link to={url.pathname}>
+        <Link href={url.pathname}>
           <img
             className="rounded-md w-[110px] h-[150px] object-cover block m-auto"
             src={manga.cover}
@@ -26,7 +26,7 @@ const MangaCard = ({ manga }: Props) => {
           />
         </Link>
       </div>
-      <Link to={url.pathname}>
+      <Link href={url.pathname}>
         <h3 className="text-base font-bold truncate hover:text-primary">
           {manga.title}
         </h3>

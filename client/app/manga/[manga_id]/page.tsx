@@ -1,57 +1,59 @@
-import {
-  Link,
-  LoaderFunctionArgs,
-  NavLink,
-  useLoaderData,
-} from "react-router-dom";
-import { Manga } from "../types";
-import axios from "axios";
+"use client";
 
-function loadImage(url: string) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.addEventListener("load", () => {
-      resolve(image);
-    });
-    image.src = url;
-  });
+import { Manga } from "@/types";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { useEffectOnce } from "react-use";
+
+interface GetDataProps {
+  manga_id: string;
 }
 
-export async function loader({ params }: LoaderFunctionArgs) {
+const getData = async (params: GetDataProps) => {
   const { data } = await axios.get(
-    `${import.meta.env.VITE_BACKEND_HOST}/manga/${params.manga_id}`
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}`
   );
 
-  // prefetch cover
-  if (data.cover) {
-    await loadImage(data.cover);
-  }
-
   return { manga: data, mangaId: params.manga_id };
-}
+};
 
-const MangaInfoPage = () => {
-  const { manga, mangaId } = useLoaderData() as {
-    manga: Manga;
-    mangaId: string;
-  };
+const MangaInfoPage = ({ params }: { params: GetDataProps }) => {
+  const [manga, setManga] = useState<Manga | null>(null);
+  const [mangaId, setMangaId] = useState<string | null>(null);
+
+  useEffectOnce(() => {
+    getData(params).then(({ manga, mangaId }) => {
+      setManga(manga);
+      setMangaId(mangaId);
+    });
+  });
+
+  if (!manga) {
+    return (
+      <>
+        <div>Loading...</div>
+      </>
+    );
+  }
 
   return (
     <>
       <div className="w-[90%] flex flex-col gap-3 m-auto">
         <div>
-          <img
+          <Image
             className="w-[350px] h-auto block m-auto rounded-md"
             src={manga.cover}
+            width={350}
+            height={500}
+            alt="cover"
           />
         </div>
 
-        <NavLink
-          className="btn btn-primary"
-          to={`/reader/${mangaId}/chapter-1`}
-        >
+        <Link className="btn btn-primary" href={`/reader/${mangaId}/chapter-1`}>
           Read now
-        </NavLink>
+        </Link>
 
         <h3 className="text-xl font-semibold">{manga.title}</h3>
 
@@ -74,7 +76,7 @@ const MangaInfoPage = () => {
           const chapterId = chapter.title.replace(/\s/g, "-").toLowerCase();
 
           return (
-            <Link key={chapter.link} to={`/reader/${mangaId}/${chapterId}`}>
+            <Link key={chapter.link} href={`/reader/${mangaId}/${chapterId}`}>
               <span className="text-base hover:text-primary">
                 {chapter.title}
               </span>
