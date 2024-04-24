@@ -1,0 +1,21 @@
+
+> mangaland-scraper@0.2.0 test
+> vitest run -t list
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vitejs.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.5.1 /Users/dmytrolaptiev/Projects/mangaland-fullstack/scraper
+
+ ↓ tests/readmanga.test.ts  (2 tests | 2 skipped)
+ ↓ tests/chapter.test.ts  (3 tests | 3 skipped)
+stdout | tests/list.test.ts > search manga list > should return an array of manga items
+
+
+ ✓ tests/list.test.ts  (1 test) 271ms
+ ↓ tests/detail.test.ts  (3 tests | 3 skipped)
+
+ Test Files  1 passed | 3 skipped (4)
+      Tests  1 passed | 8 skipped (9)
+   Start at  23:59:19
+   Duration  649ms (transform 90ms, setup 0ms, collect 745ms, tests 271ms, environment 0ms, prepare 155ms)
+

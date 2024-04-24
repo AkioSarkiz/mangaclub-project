@@ -1,34 +1,45 @@
-import * as cheerio from "cheerio";
-import axios from "axios";
+import * as cheerio from 'cheerio';
+import axios from 'axios';
+import { getUrl } from './readmanga';
+import { DetailedChapter, DetailedManga } from '../types';
+import { filter } from 'cheerio/lib/api/traversing';
 
-function getChapters($: cheerio.CheerioAPI) {
-  const chaptersContainer = $(".version-chap");
+function getChapters($: cheerio.CheerioAPI): DetailedChapter[] {
+  const chaptersContainer = $('.version-chap');
 
   if (!chaptersContainer) {
     return [];
   }
 
   return chaptersContainer
-    .find("li")
+    .find('li')
     .map((index, item) => {
-      return {
-        title: $("a", item).text().trim(),
-        link: $("a", item).attr("href"),
-        date: $(".chapter-release-date", item).text().replace(/\n/g, "").trim(),
-      };
+      const title = $('a', item).text().trim();
+      const link = $('a', item).attr('href');
+      const date = $('.chapter-release-date', item)
+        .text()
+        .replace(/\n/g, '')
+        .trim();
+
+      if (!title || !date || !link) {
+        return null;
+      }
+
+      return { title, link, date };
     })
+    .filter(Boolean)
     .toArray();
 }
 
 function getGenres($: cheerio.CheerioAPI) {
-  const genresElement = $(".genres-content");
+  const genresElement = $('.genres-content');
 
   if (!genresElement.length) {
     return [];
   }
 
   const genres = genresElement
-    .find("a")
+    .find('a')
     .map((index, element) => $(element).text().trim())
     .get();
 
@@ -36,8 +47,8 @@ function getGenres($: cheerio.CheerioAPI) {
 }
 
 function getType($: cheerio.CheerioAPI) {
-  const typeElement = $(".summary-heading").filter(
-    (index, element) => $(element).text().trim().toLocaleLowerCase() === "type",
+  const typeElement = $('.summary-heading').filter(
+    (index, element) => $(element).text().trim().toLocaleLowerCase() === 'type',
   );
 
   if (!typeElement.length) {
@@ -50,37 +61,37 @@ function getType($: cheerio.CheerioAPI) {
 }
 
 function getDescription($: cheerio.CheerioAPI) {
-  return $(".description-summary")
-    .find(".summary__content")
+  return $('.description-summary')
+    .find('.summary__content')
     .first()
     .text()
     .trim()
-    .replace(/\n/g, " ")
-    .replace(/\s\s+/g, " ");
+    .replace(/\n/g, ' ')
+    .replace(/\s\s+/g, ' ');
 }
 
 function getTitle($: cheerio.CheerioAPI) {
-  return $(".post-title > h1").text().trim();
+  return $('.post-title > h1').text().trim();
 }
 
 function getAuthor($: cheerio.CheerioAPI) {
-  return $(".author-content").text().trim();
+  return $('.author-content').text().trim();
 }
 
 function getArtist($: cheerio.CheerioAPI) {
-  return $(".artist-content").text().trim();
+  return $('.artist-content').text().trim();
 }
 
 function getReleaseYear($: cheerio.CheerioAPI) {
-  const releaseElement = $(".summary-heading").filter(
-    (_, element) => $(element).text().trim().toLocaleLowerCase() === "release",
+  const releaseElement = $('.summary-heading').filter(
+    (_, element) => $(element).text().trim().toLocaleLowerCase() === 'release',
   );
 
   if (!releaseElement.length) {
     return null;
   }
 
-  const releaseLink = releaseElement.next().find("a");
+  const releaseLink = releaseElement.next().find('a');
 
   if (!releaseLink.length) {
     return null;
@@ -92,8 +103,8 @@ function getReleaseYear($: cheerio.CheerioAPI) {
 }
 
 function getStatus($: cheerio.CheerioAPI) {
-  const statusElement = $(".summary-heading").filter(
-    (_, element) => $(element).text().trim().toLocaleLowerCase() === "status",
+  const statusElement = $('.summary-heading').filter(
+    (_, element) => $(element).text().trim().toLocaleLowerCase() === 'status',
   );
   if (!statusElement.length) {
     return null;
@@ -101,8 +112,8 @@ function getStatus($: cheerio.CheerioAPI) {
   return statusElement.next().text().trim();
 }
 
-export const getMangaDetails = async (id: string) => {
-  const url = `https://www.mangaread.org/manga/${id}/`;
+export const getMangaDetails = async (id: string): Promise<DetailedManga> => {
+  const url = getUrl(`manga/${id}/`);
   const response = await axios.get(url);
   const $ = cheerio.load(response.data);
 
@@ -114,7 +125,7 @@ export const getMangaDetails = async (id: string) => {
   const status = getStatus($);
   const artist = getArtist($);
   const description = getDescription($);
-  const cover = $(".summary_image img").attr("src");
+  const cover = $('.summary_image img').attr('src') || null;
   const chapters = getChapters($);
 
   return {

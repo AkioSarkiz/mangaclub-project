@@ -1,3 +1,3 @@
-export { getMangaDetails } from "./details";
-export { getMangaFeed } from "./list";
-export { getChapterImages } from "./chapter";
+export { getMangaDetails } from './details';
+export { getMangaFeed, getTopMangaList, search } from './list';
+export { getChapterImages } from './chapter';

@@ -1,24 +1,254 @@
-import axios from "axios";
-import * as cheerio from "cheerio";
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import { getUrl } from './readmanga';
+
+const getFeedParams = (page: number): URLSearchParams => {
+  const params = new URLSearchParams();
+  params.append('action', 'madara_load_more');
+  params.append('page', page.toString());
+  params.append('template', 'madara-core/content/content-archive');
+  params.append('vars[wp-manga-genre]', 'manhwa');
+  params.append('vars[error]', '');
+  params.append('vars[m]', '');
+  params.append('vars[p]', '0');
+  params.append('vars[post_parent]', '');
+  params.append('vars[subpost]', '');
+  params.append('vars[subpost_id]', '');
+  params.append('vars[attachment]', '');
+  params.append('vars[attachment_id]', '0');
+  params.append('vars[name]', '');
+  params.append('vars[pagename]', '');
+  params.append('vars[page_id]', '0');
+  params.append('vars[second]', '');
+  params.append('vars[minute]', '');
+  params.append('vars[hour]', '');
+  params.append('vars[day]', '0');
+  params.append('vars[monthnum]', '0');
+  params.append('vars[year]', '0');
+  params.append('vars[w]', '0');
+  params.append('vars[category_name]', '');
+  params.append('vars[tag]', '');
+  params.append('vars[cat]', '');
+  params.append('vars[tag_id]', '');
+  params.append('vars[author]', '');
+  params.append('vars[author_name]', '');
+  params.append('vars[feed]', '');
+  params.append('vars[tb]', '');
+  params.append('vars[paged]', '1');
+  params.append('vars[meta_key]', '');
+  params.append('vars[meta_value]', '');
+  params.append('vars[preview]', '');
+  params.append('vars[s]', '');
+  params.append('vars[sentence]', '');
+  params.append('vars[title]', '');
+  params.append('vars[fields]', '');
+  params.append('vars[menu_order]', '');
+  params.append('vars[embed]', '');
+  params.append('vars[ignore_sticky_posts]', 'false');
+  params.append('vars[suppress_filters]', 'false');
+  params.append('vars[cache_results]', 'true');
+  params.append('vars[update_post_term_cache]', 'true');
+  params.append('vars[update_menu_item_cache]', 'false');
+  params.append('vars[lazy_load_term_meta]', 'true');
+  params.append('vars[update_post_meta_cache]', 'true');
+  params.append('vars[post_type]', 'wp-manga');
+  params.append('vars[posts_per_page]', '100');
+  params.append('vars[nopaging]', 'false');
+  params.append('vars[comments_per_page]', '15');
+  params.append('vars[no_found_rows]', 'false');
+  params.append('vars[taxonomy]', 'wp-manga-genre');
+  params.append('vars[term]', 'manhwa');
+  params.append('vars[order]', 'DESC');
+  params.append('vars[orderby]', 'date');
+  params.append('vars[template]', 'archive');
+  params.append('vars[sidebar]', 'right');
+  params.append('vars[post_status]', 'publish');
+  params.append('vars[meta_query][0][wp-manga-genre]', 'manhwa');
+  params.append('vars[meta_query][0][error]', '');
+  params.append('vars[meta_query][0][m]', '');
+  params.append('vars[meta_query][0][p]', '0');
+  params.append('vars[meta_query][0][post_parent]', '');
+  params.append('vars[meta_query][0][subpost]', '');
+  params.append('vars[meta_query][0][subpost_id]', '');
+  params.append('vars[meta_query][0][attachment]', '');
+  params.append('vars[meta_query][0][attachment_id]', '0');
+  params.append('vars[meta_query][0][name]', '');
+  params.append('vars[meta_query][0][pagename]', '');
+  params.append('vars[meta_query][0][page_id]', '0');
+  params.append('vars[meta_query][0][second]', '');
+  params.append('vars[meta_query][0][minute]', '');
+  params.append('vars[meta_query][0][hour]', '');
+  params.append('vars[meta_query][0][day]', '0');
+  params.append('vars[meta_query][0][monthnum]', '0');
+  params.append('vars[meta_query][0][year]', '0');
+  params.append('vars[meta_query][0][w]', '0');
+  params.append('vars[meta_query][0][category_name]', '');
+  params.append('vars[meta_query][0][tag]', '');
+  params.append('vars[meta_query][0][cat]', '');
+  params.append('vars[meta_query][0][tag_id]', '');
+  params.append('vars[meta_query][0][author]', '');
+  params.append('vars[meta_query][0][author_name]', '');
+  params.append('vars[meta_query][0][feed]', '');
+  params.append('vars[meta_query][0][tb]', '');
+  params.append('vars[meta_query][0][paged]', '1');
+  params.append('vars[meta_query][0][meta_key]', '');
+  params.append('vars[meta_query][0][meta_value]', '');
+  params.append('vars[meta_query][0][preview]', '');
+  params.append('vars[meta_query][0][s]', '');
+  params.append('vars[meta_query][0][sentence]', '');
+  params.append('vars[meta_query][0][title]', '');
+  params.append('vars[meta_query][0][fields]', '');
+  params.append('vars[meta_query][0][menu_order]', '');
+  params.append('vars[meta_query][0][embed]', '');
+  params.append('vars[meta_query][0][ignore_sticky_posts]', 'false');
+  params.append('vars[meta_query][0][suppress_filters]', 'false');
+  params.append('vars[meta_query][0][cache_results]', 'true');
+  params.append('vars[meta_query][0][update_post_term_cache]', 'true');
+  params.append('vars[meta_query][0][update_menu_item_cache]', 'false');
+  params.append('vars[meta_query][0][lazy_load_term_meta]', 'true');
+  params.append('vars[meta_query][0][order]', 'DESC');
+  params.append('vars[meta_query][0][orderby]', 'date');
+  params.append('vars[meta_query][0][template]', 'archive');
+  params.append('vars[meta_query][0][sidebar]', 'right');
+  params.append('vars[meta_query][0][post_status]', 'publish');
+  params.append('vars[meta_query][relation]', 'AND');
+  return params;
+};
+
+const getTopMangaListParams = (page: number): URLSearchParams => {
+  const params = new URLSearchParams();
+  params.append('action', 'madara_load_more');
+  params.append('page', page.toString());
+  params.append('template', 'madara-core/content/content-archive');
+  params.append('vars[paged]', '1');
+  params.append('vars[orderby]', 'meta_value_num');
+  params.append('vars[template]', 'archive');
+  params.append('vars[sidebar]', 'right');
+  params.append('vars[post_type]', 'wp-manga');
+  params.append('vars[post_status]', 'publish');
+  params.append('vars[meta_key]', '_wp_manga_week_views_value');
+  params.append('vars[order]', 'desc');
+  params.append('vars[meta_query][0][paged]', '1');
+  params.append('vars[meta_query][0][orderby]', 'meta_value_num');
+  params.append('vars[meta_query][0][template]', 'archive');
+  params.append('vars[meta_query][0][sidebar]', 'right');
+  params.append('vars[meta_query][0][post_type]', 'wp-manga');
+  params.append('vars[meta_query][0][post_status]', 'publish');
+  params.append('vars[meta_query][0][meta_key]', '_wp_manga_week_views_value');
+  params.append('vars[meta_query][0][order]', 'desc');
+  params.append('vars[meta_query][0][relation]', 'AND');
+  params.append('vars[manga_archives_item_layout]', 'default');
+
+  return params;
+};
+
+const getSearchParams = (query: string): URLSearchParams => {
+  const params = new URLSearchParams();
+  params.append('action', 'madara_load_more');
+  params.append('page', '1');
+  params.append('template', 'madara-core/content/content-search');
+  params.append('vars[s]', query);
+  params.append('vars[orderby]', '');
+  params.append('vars[paged]', '1');
+  params.append('vars[template]', 'search');
+  params.append('vars[meta_query][0][s]', query);
+  params.append('vars[meta_query][0][orderby]', '');
+  params.append('vars[meta_query][0][paged]', '1');
+  params.append('vars[meta_query][0][template]', 'search');
+  params.append('vars[meta_query][0][meta_query][relation]', 'AND');
+  params.append('vars[meta_query][0][post_type]', 'wp-manga');
+  params.append('vars[meta_query][0][post_status]', 'publish');
+  params.append('vars[meta_query][relation]', 'AND');
+  params.append('vars[post_type]', 'wp-manga');
+  params.append('vars[post_status]', 'publish');
+  params.append('vars[manga_archives_item_layout]', 'default');
+
+  return params;
+};
 
 export const getMangaFeed = async (page: number = 1) => {
-  const data = `action=madara_load_more&page=${page}&template=madara-core%2Fcontent%2Fcontent-archive&vars%5Bwp-manga-genre%5D=manhwa&vars%5Berror%5D=&vars%5Bm%5D=&vars%5Bp%5D=0&vars%5Bpost_parent%5D=&vars%5Bsubpost%5D=&vars%5Bsubpost_id%5D=&vars%5Battachment%5D=&vars%5Battachment_id%5D=0&vars%5Bname%5D=&vars%5Bpagename%5D=&vars%5Bpage_id%5D=0&vars%5Bsecond%5D=&vars%5Bminute%5D=&vars%5Bhour%5D=&vars%5Bday%5D=0&vars%5Bmonthnum%5D=0&vars%5Byear%5D=0&vars%5Bw%5D=0&vars%5Bcategory_name%5D=&vars%5Btag%5D=&vars%5Bcat%5D=&vars%5Btag_id%5D=&vars%5Bauthor%5D=&vars%5Bauthor_name%5D=&vars%5Bfeed%5D=&vars%5Btb%5D=&vars%5Bpaged%5D=1&vars%5Bmeta_key%5D=&vars%5Bmeta_value%5D=&vars%5Bpreview%5D=&vars%5Bs%5D=&vars%5Bsentence%5D=&vars%5Btitle%5D=&vars%5Bfields%5D=&vars%5Bmenu_order%5D=&vars%5Bembed%5D=&vars%5Bignore_sticky_posts%5D=false&vars%5Bsuppress_filters%5D=false&vars%5Bcache_results%5D=true&vars%5Bupdate_post_term_cache%5D=true&vars%5Bupdate_menu_item_cache%5D=false&vars%5Blazy_load_term_meta%5D=true&vars%5Bupdate_post_meta_cache%5D=true&vars%5Bpost_type%5D=wp-manga&vars%5Bposts_per_page%5D=100&vars%5Bnopaging%5D=false&vars%5Bcomments_per_page%5D=15&vars%5Bno_found_rows%5D=false&vars%5Btaxonomy%5D=wp-manga-genre&vars%5Bterm%5D=manhwa&vars%5Border%5D=DESC&vars%5Borderby%5D=date&vars%5Btemplate%5D=archive&vars%5Bsidebar%5D=right&vars%5Bpost_status%5D=publish&vars%5Bmeta_query%5D%5B0%5D%5Bwp-manga-genre%5D=manhwa&vars%5Bmeta_query%5D%5B0%5D%5Berror%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bm%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bp%5D=0&vars%5Bmeta_query%5D%5B0%5D%5Bpost_parent%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bsubpost%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bsubpost_id%5D=&vars%5Bmeta_query%5D%5B0%5D%5Battachment%5D=&vars%5Bmeta_query%5D%5B0%5D%5Battachment_id%5D=0&vars%5Bmeta_query%5D%5B0%5D%5Bname%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bpagename%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bpage_id%5D=0&vars%5Bmeta_query%5D%5B0%5D%5Bsecond%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bminute%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bhour%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bday%5D=0&vars%5Bmeta_query%5D%5B0%5D%5Bmonthnum%5D=0&vars%5Bmeta_query%5D%5B0%5D%5Byear%5D=0&vars%5Bmeta_query%5D%5B0%5D%5Bw%5D=0&vars%5Bmeta_query%5D%5B0%5D%5Bcategory_name%5D=&vars%5Bmeta_query%5D%5B0%5D%5Btag%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bcat%5D=&vars%5Bmeta_query%5D%5B0%5D%5Btag_id%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bauthor%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bauthor_name%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bfeed%5D=&vars%5Bmeta_query%5D%5B0%5D%5Btb%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bpaged%5D=1&vars%5Bmeta_query%5D%5B0%5D%5Bmeta_key%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bmeta_value%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bpreview%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bs%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bsentence%5D=&vars%5Bmeta_query%5D%5B0%5D%5Btitle%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bfields%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bmenu_order%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bembed%5D=&vars%5Bmeta_query%5D%5B0%5D%5Bignore_sticky_posts%5D=false&vars%5Bmeta_query%5D%5B0%5D%5Bsuppress_filters%5D=false&vars%5Bmeta_query%5D%5B0%5D%5Bcache_results%5D=true&vars%5Bmeta_query%5D%5B0%5D%5Bupdate_post_term_cache%5D=true&vars%5Bmeta_query%5D%5B0%5D%5Bupdate_menu_item_cache%5D=false&vars%5Bmeta_query%5D%5B0%5D%5Blazy_load_term_meta%5D=true&vars%5Bmeta_query%5D%5B0%5D%5Bupdate_post_meta_cache%5D=true&vars%5Bmeta_query%5D%5B0%5D%5Bpost_type%5D=wp-manga&vars%5Bmeta_query%5D%5B0%5D%5Bposts_per_page%5D=12&vars%5Bmeta_query%5D%5B0%5D%5Bnopaging%5D=false&vars%5Bmeta_query%5D%5B0%5D%5Bcomments_per_page%5D=25&vars%5Bmeta_query%5D%5B0%5D%5Bno_found_rows%5D=false&vars%5Bmeta_query%5D%5B0%5D%5Btaxonomy%5D=wp-manga-genre&vars%5Bmeta_query%5D%5B0%5D%5Bterm%5D=manhwa&vars%5Bmeta_query%5D%5B0%5D%5Border%5D=DESC&vars%5Bmeta_query%5D%5B0%5D%5Borderby%5D=date&vars%5Bmeta_query%5D%5B0%5D%5Btemplate%5D=archive&vars%5Bmeta_query%5D%5B0%5D%5Bsidebar%5D=right&vars%5Bmeta_query%5D%5B0%5D%5Bpost_status%5D=publish&vars%5Bmeta_query%5D%5Brelation%5D=AND`;
-
+  const params = getFeedParams(page);
+  const url = getUrl('wp-admin/admin-ajax.php');
   const config = {
-    method: "post",
+    method: 'post',
     maxBodyLength: Infinity,
-    url: "https://www.mangaread.org/wp-admin/admin-ajax.php",
-    data: data,
+    url,
+    data: params,
   };
 
   const response = await axios.request(config);
   const $ = cheerio.load(response.data);
 
-  return $(".page-listing-item")
+  return $('.page-listing-item')
     .map((index, item) => ({
-      cover: $("img", item).attr("src"),
-      link: $("a", item).attr("href"),
-      title: $("a", item).attr("title"),
+      cover: $('img', item).attr('src'),
+      link: $('a', item).attr('href'),
+      title: $('a', item).attr('title'),
     }))
+    .toArray();
+};
+
+export const getTopMangaList = async (page: number = 1) => {
+  const params = getTopMangaListParams(page);
+  const url = getUrl('wp-admin/admin-ajax.php');
+  const config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url,
+    data: params,
+  };
+
+  const response = await axios.request(config);
+  const $ = cheerio.load(response.data);
+
+  return $('.page-listing-item')
+    .map((index, item) => ({
+      cover: $('img', item).attr('src'),
+      link: $('a', item).attr('href'),
+      title: $('a', item).attr('title'),
+    }))
+    .toArray();
+};
+
+export const search = async (query: string) => {
+  const url = getUrl('wp-admin/admin-ajax.php');
+  const params = getSearchParams(query);
+  const config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url,
+    data: params,
+  };
+
+  const response = await axios.request(config);
+
+  if (!response || !response.data) {
+    return [];
+  }
+
+  const $ = cheerio.load(response.data);
+
+  return $('.row')
+    .map((index, item) => {
+      if (!item) {
+        return false;
+      }
+      return {
+        title: $('a', item).attr('title'),
+        link: $('a', item).attr('href'),
+        cover: $('.img-responsive', item).attr('src'),
+        genres: $('.mg_genres a', item)
+          .map((index, genre) => {
+            if (!genre) {
+              return false;
+            }
+
+            return { name: $(genre).text(), link: $(genre).attr('href') };
+          })
+          .filter(Boolean)
+          .toArray(),
+      };
+    })
+    .filter(Boolean)
     .toArray();
 };

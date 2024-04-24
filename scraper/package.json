@@ -1,12 +1,13 @@
 {
   "name": "mangaland-scraper",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The scraper for the mangaland project",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "vitest run",
+    "coverage": "vitest run --coverage",
     "eslint-fix": "eslint --fix .",
     "build": "tsup"
   },
@@ -33,7 +34,8 @@
     "axios": "^1.6.8",
     "cheerio": "^1.0.0-rc.12",
     "eslint": "^8.57.0",
-    "tsup": "^8.0.2"
+    "tsup": "^8.0.2",
+    "url-join": "^5.0.0"
   },
   "volta": {
     "node": "20.12.1",
@@ -41,6 +43,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.7.0",
+    "@vitest/coverage-istanbul": "^1.5.1",
     "typescript": "^5.4.4",
     "vitest": "^1.4.0"
   }
