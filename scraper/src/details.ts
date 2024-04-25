@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 import axios from 'axios';
 import { getUrl } from './readmanga';
 import { DetailedChapter, DetailedManga } from '../types';
-import { filter } from 'cheerio/lib/api/traversing';
 
 function getChapters($: cheerio.CheerioAPI): DetailedChapter[] {
   const chaptersContainer = $('.version-chap');
@@ -13,7 +12,7 @@ function getChapters($: cheerio.CheerioAPI): DetailedChapter[] {
 
   return chaptersContainer
     .find('li')
-    .map((index, item) => {
+    .map((_, item) => {
       const title = $('a', item).text().trim();
       const link = $('a', item).attr('href');
       const date = $('.chapter-release-date', item)
@@ -40,7 +39,7 @@ function getGenres($: cheerio.CheerioAPI) {
 
   const genres = genresElement
     .find('a')
-    .map((index, element) => $(element).text().trim())
+    .map((_, element) => $(element).text().trim())
     .get();
 
   return genres;
@@ -48,7 +47,7 @@ function getGenres($: cheerio.CheerioAPI) {
 
 function getType($: cheerio.CheerioAPI) {
   const typeElement = $('.summary-heading').filter(
-    (index, element) => $(element).text().trim().toLocaleLowerCase() === 'type',
+    (_, element) => $(element).text().trim().toLocaleLowerCase() === 'type',
   );
 
   if (!typeElement.length) {

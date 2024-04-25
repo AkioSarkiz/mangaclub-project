@@ -14,6 +14,7 @@ export const getChapterImages = async (url: string): Promise<Chapter[]> => {
 
   return chapterImages
     .map((index, item) => ({
+      index,
       src: $(item).attr('src')?.trim(),
     }))
     .toArray();
