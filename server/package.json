@@ -9,7 +9,8 @@
     "@hono/node-server": "^1.9.0",
     "hono": "^4.2.2",
     "lodash": "^4.17.21",
-    "mangaland-scraper": "^0.2.0"
+    "mangaland-scraper": "^0.2.0",
+    "redis": "^4.6.13"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
