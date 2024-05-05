@@ -4,7 +4,7 @@ import axios from "axios";
 
 async function getData() {
   const [{ data: feed }] = await Promise.all([
-    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/feed`),
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/feed`),
   ]);
   const nextPage = 3;
 
