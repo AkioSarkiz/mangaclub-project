@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MangaCard from "@/components/MangaCard";
 import axios from "axios";
-import { useEffectOnce } from "react-use";
-import { useAtom } from "jotai";
-import { feedAtom } from "@/atoms/feed";
-import { useHydrateAtoms } from "jotai/utils";
 
 async function getData() {
-  const [{ data: dataFeed1 }, { data: dataFeed2 }] = await Promise.all([
+  const [{ data: feed }] = await Promise.all([
     axios.get(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/feed`),
   ]);
   const nextPage = 3;
 
-  return { feed: [...dataFeed1, ...dataFeed2], nextPage };
+  return { feed, nextPage };
 }
 
 const IndexPage = async () => {
