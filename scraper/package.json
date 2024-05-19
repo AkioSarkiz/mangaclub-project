@@ -1,6 +1,6 @@
 {
   "name": "mangaland-scraper",
-  "version": "0.6.0",
+  "version": "0.7.1",
   "description": "The scraper for the mangaland project",
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/types/index.d.ts",
@@ -21,11 +21,10 @@
   },
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build-esm": "tsup --tsconfig ./tsconfig.esm.json",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc -p ./tsconfig.esm.json",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json",
-    "prepack": "npm run build",
+    "tsup": "tsup --tsconfig ./tsconfig.esm.json",
+    "___build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "___build:esm": "tsc -p ./tsconfig.esm.json",
+    "___build:cjs": "tsc -p ./tsconfig.cjs.json",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "eslint-fix": "eslint --fix ."
