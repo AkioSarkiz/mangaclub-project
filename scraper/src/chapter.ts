@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { Chapter } from '../types';
+import { Chapter } from './types';
 
 export const getChapterImages = async (url: string): Promise<Chapter[]> => {
   const response = await axios.get(url);

@@ -8,6 +8,19 @@ services:
       - app-network
     volumes:
       - redis-data:/data
+  db:
+    image: postgres:alpine
+    container_name: db
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
 networks:
   app-network:
@@ -15,4 +28,6 @@ networks:
 
 volumes:
   redis-data:
+    driver: local
+  db-data:
     driver: local

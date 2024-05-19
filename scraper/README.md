@@ -1,4 +1,4 @@
-# Scraper
+# Scraper. ESM only.
 
 This is a scraper project that allows you to extract data from websites.
 

@@ -12,6 +12,7 @@
 
 # dev folders
 src
+!src/**/*.d.ts
 tests
 
 # dev files

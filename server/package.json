@@ -3,20 +3,31 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc && tsc-alias",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "pg:generate": "drizzle-kit generate:pg",
+    "pg:migrate": "tsx ./src/scripts/migrate.ts",
+    "yoy": "node ./dist/src/cron/scrape.js"
   },
   "dependencies": {
+    "@clerk/backend": "^1.1.1",
+    "@hono/clerk-auth": "^2.0.0",
     "@hono/node-server": "^1.9.0",
-    "hono": "^4.2.2",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.10",
+    "hono": "^4.3.2",
+    "hono-rate-limiter": "^0.3.0",
     "lodash": "^4.17.21",
-    "mangaland-scraper": "^0.2.0",
+    "mangaland-scraper": "file:../scraper",
+    "pg": "^8.11.5",
+    "postgres": "^3.4.4",
     "redis": "^4.6.13"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
     "@types/node": "^20.11.17",
+    "drizzle-kit": "^0.20.18",
     "tsc-alias": "^1.8.8",
-    "tsx": "^4.7.1",
+    "tsx": "^4.9.3",
     "typescript": "^5.4.5"
   },
   "volta": {

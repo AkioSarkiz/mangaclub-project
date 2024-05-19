@@ -4,7 +4,10 @@ import {
   getMangaDetails,
   getMangaFeed,
 } from "mangaland-scraper";
-import { remember } from "./cache";
+import { remember } from "../cache";
+import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+import { MangaTransformer } from "../transformers/manga.transformer";
+import { MangaSyncService } from "../services/manga-sync.service";
 
 const mangaRouter = new Hono();
 
@@ -18,38 +21,22 @@ mangaRouter.get("/feed", async (c) => {
   const feed = await getMangaFeed(page);
 
   return c.json(
-    feed.map((item) => {
-      if (!item.cover) {
-        return item;
-      }
-
-      const url = new URL(item.cover);
-
-      return {
-        ...item,
-        cover: new URL(`${url.host}/${url.pathname}`, "https://i2.wp.com").href,
-      };
-    })
+    await Promise.all(feed.map((manga) => MangaTransformer.transform(manga)))
   );
 });
 
 mangaRouter.get("/:slug", async (c) => {
-  return c.json(
-    await remember(`manga:${c.req.param("slug")}`, 3600, async () => {
-      const manga = await getMangaDetails(c.req.param("slug"));
+  const getManga = async () => {
+    const detailedManga = await getMangaDetails(c.req.param("slug"));
 
-      if (manga.cover) {
-        const url = new URL(manga.cover);
+    await MangaSyncService.syncDetailedManga(detailedManga);
 
-        manga.cover = new URL(
-          `${url.host}/${url.pathname}`,
-          "https://i2.wp.com"
-        ).href;
-      }
+    return MangaTransformer.transform(detailedManga);
+  };
 
-      return manga;
-    })
-  );
+  const data = await remember(`manga:${c.req.param("slug")}`, 3600, getManga);
+
+  return c.json(data);
 });
 
 mangaRouter.get("/:slug/chapters/:chapter-id", async (c) => {

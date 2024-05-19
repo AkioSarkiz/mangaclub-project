@@ -1,12 +1,44 @@
+import "dotenv/config";
+
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { mangaRouter } from "./manga";
+import { mangaRouter } from "./routes/manga.route";
+import { rateLimiter } from "hono-rate-limiter";
+import { IncomingMessage, ServerResponse } from "http";
+import { trimTrailingSlash } from "hono/trailing-slash";
 
-const port = 8080;
-const app = new Hono();
+type Bindings = {
+  incoming: IncomingMessage;
+  outgoing: ServerResponse;
+};
 
+const port = Number(process.env.PORT || 8080);
+const app = new Hono<{ Bindings: Bindings }>({ strict: true });
+
+const limiter = rateLimiter({
+  windowMs: 60 * 1000, // 15 minutes
+  limit: 120, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  standardHeaders: "draft-6", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+  // Method to generate custom identifiers for clients.
+  keyGenerator: (c) => {
+    const ip =
+      c.req.raw.headers.get("x-forwarded-for") ||
+      // @ts-ignore
+      c.env.outgoing.socket.remoteAddress;
+
+    if (!ip) {
+      throw Error("IP address not found");
+    }
+
+    return ip;
+  },
+});
+
+app.use(limiter);
 app.use("/*", cors());
+app.use(trimTrailingSlash());
+
 app.route("manga", mangaRouter);
 
 console.log(`Server is running on port ${port}`);
