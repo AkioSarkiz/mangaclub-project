@@ -1,6 +1,6 @@
 {
   "name": "mangaland-scraper",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "The scraper for the mangaland project",
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/types/index.d.ts",
