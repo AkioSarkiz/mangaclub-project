@@ -1,6 +1,6 @@
-# Mangaland Fullstack
+# Mangaclub Fullstack
 
-Mangaland Fullstack is a monorepository project that contains the client, scraper, and server parts.
+Mangaclub Fullstack is a monorepository project that contains the client, scraper, and server parts.
 
 ## Server
 
@@ -18,8 +18,8 @@ The client is a typical React application that is responsible for displaying use
 
 To install and run the project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/mangaland-fullstack.git`
-2. Navigate to the project directory: `cd mangaland-fullstack`
+1. Clone the repository: `git clone https://github.com/your-username/mangaclub-fullstack.git`
+2. Navigate to the project directory: `cd mangaclub-fullstack`
 3. Install the dependencies: `npm install`
 4. Start the server: `npm run start:server`
 5. Start the client: `npm run start:client`

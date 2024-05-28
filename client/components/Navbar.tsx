@@ -7,7 +7,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 const Navbar: React.FC = () => {
-  const title = "Mangaland";
+  const title = "Mangaclub";
   const [isDrawerOpened, setIsDrawerOpened] = useAtom(isDrawerOpenedAtom);
 
   return (

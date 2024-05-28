@@ -1,6 +1,6 @@
 # Server
 
-This is the server component of the Mangaland Fullstack project.
+This is the server component of the Mangaclub Fullstack project.
 
 ## Installation
 
