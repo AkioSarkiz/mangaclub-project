@@ -1,8 +1,16 @@
-import { getMangaDetails, getTopMangaList } from "mangaland-scraper";
-import { MangaSyncService } from "../services/manga-sync.service";
+import 'dotenv/config';
+
+import { getMangaDetails, getTopMangaList } from 'mangaland-scraper';
+import { sync } from '../manga-sync.js';
+import winston, { createLogger } from 'winston';
+
+const logger = createLogger({
+  level: 'info',
+  transports: [new winston.transports.Console()],
+});
 
 for (let i = 0; i < 10; i++) {
-  const mangaList = await getTopMangaList();
+  const mangaList = await getTopMangaList(i + 1);
 
   for (const mangaItem of mangaList) {
     if (!mangaItem.link) {
@@ -10,8 +18,18 @@ for (let i = 0; i < 10; i++) {
       continue;
     }
 
-    const detailedManga = await getMangaDetails(mangaItem.link);
+    const mangaId = mangaItem.link.split('/').slice(-2).shift();
 
-    await MangaSyncService.syncDetailedManga(detailedManga);
+    if (!mangaId) {
+      console.log(`Skipping manga ${mangaItem.title} because it has no id`);
+      continue;
+    }
+
+    const detailedManga = await getMangaDetails(mangaId);
+
+    // FIXME: chapters are not being saved
+    await sync(detailedManga, logger);
+
+    console.log(`Synced manga ${mangaItem.title} (${mangaId})`);
   }
 }

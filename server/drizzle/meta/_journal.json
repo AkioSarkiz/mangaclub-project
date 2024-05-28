@@ -8,6 +8,55 @@
       "when": 1715293804608,
       "tag": "0000_yielding_hannibal_king",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1716157988206,
+      "tag": "0001_nifty_rockslide",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1716414771005,
+      "tag": "0002_ordinary_quasar",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1716450414242,
+      "tag": "0003_solid_swarm",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1716450898913,
+      "tag": "0004_bouncy_network",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1716467901187,
+      "tag": "0005_brief_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1716899316446,
+      "tag": "0006_petite_blob",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1716899489557,
+      "tag": "0007_open_molly_hayes",
+      "breakpoints": true
     }
   ]
 }

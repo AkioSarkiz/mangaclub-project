@@ -43,12 +43,12 @@ async function getData({ params }: { params: Params }) {
       .toLowerCase();
   }
 
-  return { mangaFrames: data, nextChapterId };
+  return { mangaFrames: data.frames, nextChapterId };
 }
 
 const ReaderPage = ({ params }: { params: Params }) => {
   const [frameIndex, setFrameIndex] = useState(0);
-  const [mangaFrames, setMangaFrames] = useState<{ url: string }[]>([]);
+  const [mangaFrames, setMangaFrames] = useState<{ image: string }[]>([]);
   const [nextChapterId, setNextChapterId] = useState<number | null>(null);
 
   const router = useRouter();
@@ -82,7 +82,7 @@ const ReaderPage = ({ params }: { params: Params }) => {
     new Promise((resolve) => {
       for (let i = 0; i < mangaFrames.length; i++) {
         const frame = mangaFrames[i];
-        loadImage(frame.url).then();
+        loadImage(frame.image).then();
       }
 
       resolve(undefined);
@@ -124,7 +124,7 @@ const ReaderPage = ({ params }: { params: Params }) => {
       <img
         onClick={handleNextFrame}
         className="w-100 h-auto block mx-auto"
-        src={mangaFrames[frameIndex].url}
+        src={mangaFrames[frameIndex].image}
         alt={`frame #${frameIndex}`}
       />
     </>

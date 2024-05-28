@@ -1,6 +1,6 @@
 export interface MangaFrame {
   id: number;
-  url: string;
+  image: string;
 }
 
 export interface MangaChapter {
@@ -19,7 +19,7 @@ export interface Manga {
   year: number;
   rating: 1 | 2 | 3 | 4 | 5;
   type: string;
-  genres: string[];
+  genres: { genre: { name: string; id: string } }[];
 
   chapters: MangaChapter[];
 }

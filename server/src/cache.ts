@@ -1,4 +1,4 @@
-import { createClient } from "redis";
+import { createClient } from 'redis';
 
 const client = createClient();
 
@@ -7,11 +7,7 @@ await client.connect();
 /**
  * @param expire Set the specified expire time, in seconds (a positive integer).
  */
-const set = async (
-  key: string,
-  value: string,
-  expire: number | undefined = undefined
-) => {
+const set = async (key: string, value: string, expire: number | undefined = undefined) => {
   await client.set(key, value, { EX: expire });
 };
 
@@ -26,11 +22,7 @@ const exists = async (key: string) => {
 /**
  * @param expire Set the specified expire time, in seconds (a positive integer).
  */
-const remember = async <T>(
-  key: string,
-  expire: number | undefined = undefined,
-  callback: () => Promise<T>
-) => {
+const remember = async <T>(key: string, expire: number | undefined = undefined, callback: () => Promise<T>) => {
   if (await exists(key)) {
     // @ts-ignore
     return JSON.parse(await get(key));

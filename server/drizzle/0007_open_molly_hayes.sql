@@ -1,0 +1,1 @@
+ALTER TABLE "manga_chapter_frames" ADD COLUMN "index" integer NOT NULL;

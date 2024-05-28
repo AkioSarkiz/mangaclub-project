@@ -58,9 +58,9 @@ const MangaInfoPage = ({ params }: { params: GetDataProps }) => {
         <h3 className="text-xl font-semibold">{manga.title}</h3>
 
         <div className="flex gap-3 mt-2 flex-wrap">
-          {manga.genres.map((genre: string) => (
-            <div key={genre} className="badge badge-primary badge-lg">
-              {genre}
+          {manga.genres.map(({ genre }) => (
+            <div key={genre.id} className="badge badge-primary badge-lg">
+              {genre.name}
             </div>
           ))}
         </div>
