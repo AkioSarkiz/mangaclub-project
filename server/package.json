@@ -19,7 +19,7 @@
     "hono": "^4.3.2",
     "hono-rate-limiter": "^0.3.0",
     "lodash": "^4.17.21",
-    "mangaland-scraper": "file:../scraper",
+    "mangaland-scraper": "^0.7.1",
     "pg": "^8.11.5",
     "postgres": "^3.4.4",
     "redis": "^4.6.13",
