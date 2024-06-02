@@ -1,13 +1,8 @@
-import 'dotenv/config';
+import './bootstrap.js';
 
 import { getMangaDetails, getTopMangaList } from 'mangaland-scraper';
 import { sync } from '../manga-sync.js';
-import winston, { createLogger } from 'winston';
-
-const logger = createLogger({
-  level: 'info',
-  transports: [new winston.transports.Console()],
-});
+import { logger } from '../logger.js';
 
 for (let i = 0; i < 10; i++) {
   const mangaList = await getTopMangaList(i + 1);

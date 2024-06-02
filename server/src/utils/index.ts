@@ -1,1 +1,1 @@
-export { parseRelativeDate } from './date';
+export { parseRelativeDate } from './date.js';

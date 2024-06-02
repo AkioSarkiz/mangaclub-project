@@ -1,8 +1,6 @@
-import { getChapterImages } from 'mangaland-scraper';
-import { remember } from '../../cache.js';
 import { HonoBase } from 'hono/hono-base';
 import { db } from '../../db/connection.js';
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { MangaChapters } from '../../db/schema.js';
 
 export const registerChapterList = (mangaRouter: HonoBase) => {

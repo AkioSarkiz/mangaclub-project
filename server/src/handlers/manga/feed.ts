@@ -14,6 +14,7 @@ export const registerFeed = (mangaRouter: HonoBase) => {
 
     const mangas = await db.query.Mangas.findMany({
       limit: 40,
+      offset: (page - 1) * 40,
       orderBy: [desc(Mangas.createdAt)],
     });
 
