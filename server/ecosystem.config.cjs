@@ -22,6 +22,7 @@ module.exports = {
       script: 'dist/src/cron/scrape.js',
       instances: 1,
       cron_restart: '0 * * * *',
+      autorestart: false,
     },
   ],
 };
