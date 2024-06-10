@@ -5,7 +5,7 @@ module.exports = {
   apps: [
     {
       name: 'mangaland',
-      script: 'dist/index.js',
+      script: 'dist/src/index.js',
 
       listen_timeout: 3_000,
       kill_timeout: 10_000,
