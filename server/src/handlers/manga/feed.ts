@@ -1,5 +1,5 @@
 import { HonoBase } from 'hono/hono-base';
-import { db } from '../../db/connection';
+import { db } from '../../db/connection.js';
 import { desc } from 'drizzle-orm';
 import { Mangas } from '../../db/schema.js';
 import { transform } from '../../transformers/manga-compact.js';
