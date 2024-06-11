@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import axios from 'axios';
-import { getUrl } from './readmanga.js';
-import { DetailedChapter, DetailedManga } from './types';
+import { getUrl } from './mangaread.js';
+import { DetailedChapter, DetailedManga } from '../types';
 
 function getChapters($: cheerio.CheerioAPI): DetailedChapter[] {
   const chaptersContainer = $('.version-chap');

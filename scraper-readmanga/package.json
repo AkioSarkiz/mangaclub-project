@@ -1,0 +1,43 @@
+{
+  "name": "scraper-readmanga",
+  "version": "0.0.1",
+  "description": "The scraper of readmanga website",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkioSarkiz/readmanga-scraper.git"
+  },
+  "keywords": [
+    "scraper",
+    "readmanga"
+  ],
+  "author": "Dmytro Laptiev <akiosarkiz@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AkioSarkiz/readmanga-scraper/issues"
+  },
+  "homepage": "https://github.com/AkioSarkiz/readmanga-scraper#readme",
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.13",
+    "vitest": "^1.6.0"
+  },
+  "volta": {
+    "node": "21.7.3",
+    "npm": "10.8.1"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.17.5",
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0-rc.12",
+    "eslint": "^9.4.0",
+    "lodash": "^4.17.21"
+  }
+}

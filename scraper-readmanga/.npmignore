@@ -1,0 +1,21 @@
+/node_modules
+
+# Ignore test-related files
+/coverage.data
+/coverage/
+
+# macos
+.DS_Store
+
+# editors
+.vscode
+
+# dev folders
+src
+!src/**/*.d.ts
+tests
+
+# dev files
+.editorconfig
+tsup.config.ts
+.eslintrc.js

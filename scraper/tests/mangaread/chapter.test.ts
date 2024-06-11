@@ -1,5 +1,5 @@
-import { describe, expect, it, test } from 'vitest';
-import { getChapterImages } from '../src';
+import { describe, expect, it } from 'vitest';
+import { getChapterImages } from '../../src';
 import ChapterSoloLeveling1 from './data/chapter-solo-leveling-1.json';
 import ChapterSoloLeveling2 from './data/chapter-solo-leveling-2.json';
 import ChapterSoloLeveling3 from './data/chapter-solo-leveling-3.json';
@@ -23,7 +23,7 @@ const sources = [
 ];
 
 describe.each(sources)('Chapter', ({ url, shouldBeExpect }) => {
-  it('should fetch chapter\'s images $label', async () => {
+  it("should fetch chapter's images $label", async () => {
     const chapters = await getChapterImages(url);
 
     expect(chapters).toEqual(shouldBeExpect);

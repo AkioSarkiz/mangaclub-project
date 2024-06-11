@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { getUrl } from '../src/readmanga';
+import { getUrl } from '../../src/mangaread/mangaread.js';
 
 test('get base readmanga url', () => {
   const url = getUrl();

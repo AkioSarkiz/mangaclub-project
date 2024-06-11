@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { getUrl } from './readmanga.js';
+import { getUrl } from './mangaread.js';
 
 const getFeedParams = (page: number): URLSearchParams => {
   const params = new URLSearchParams();

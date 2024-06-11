@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { getMangaFeed, getTopMangaList, search } from '../src';
+import { getMangaFeed, getTopMangaList, search } from '../../src';
 
 const feedPages = [{ page: 1 }, { page: 2 }, { page: 3 }];
 

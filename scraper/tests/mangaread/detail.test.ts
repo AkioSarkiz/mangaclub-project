@@ -1,8 +1,8 @@
 import { describe, test, expect, assertType } from 'vitest';
-import { getMangaDetails } from '../src';
+import { getMangaDetails } from '../../src';
 import OnaniMasterKurosawaData from './data/details-onani-master-kurosawa.json';
 import BlueFlame from './data/details-blue-flame.json';
-import { DetailedManga } from '../types';
+import { DetailedManga } from '../../src/types';
 import BasterdHwangYoungchan from './data/details-bastard-hwang-youngchan.json';
 
 const mangasUrls = [
