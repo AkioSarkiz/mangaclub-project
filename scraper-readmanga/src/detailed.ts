@@ -1,6 +1,7 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
 import _ from 'lodash'
+import type { ScrapedDetailedManga } from '../types/index.d.ts'
 
 const getChapters = ($: cheerio.CheerioAPI) => {
   const allChapterSections = $('[id^="cmtb-"]')
@@ -10,8 +11,8 @@ const getChapters = ($: cheerio.CheerioAPI) => {
       .find('li')
       .map((index, chapter) => {
         return {
-          title: $(chapter).find('a').text().trim(),
-          link: $(chapter).find('a').attr('href'),
+          title: $(chapter).find('a').text().trim() || null,
+          link: $(chapter).find('a').attr('href') || null,
         }
       })
       .toArray()
@@ -20,7 +21,7 @@ const getChapters = ($: cheerio.CheerioAPI) => {
   return chapters.toArray()
 }
 
-export const getDetailedManga = async (id: string) => {
+export const getDetailedManga = async (id: string): Promise<ScrapedDetailedManga> => {
   const url = `https://readmanga.app/${id}`
   const response = await axios.get(url)
   const $ = cheerio.load(response.data)
@@ -39,9 +40,10 @@ export const getDetailedManga = async (id: string) => {
     name: $('.novels-detail-right > ul:nth-child(1) > li:nth-child(6) > div:nth-child(2) > a:nth-child(1)')
       .first()
       .text(),
-    link: $('.novels-detail-right > ul:nth-child(1) > li:nth-child(6) > div:nth-child(2) > a:nth-child(1)')
-      .first()
-      .attr('href'),
+    link:
+      $('.novels-detail-right > ul:nth-child(1) > li:nth-child(6) > div:nth-child(2) > a:nth-child(1)')
+        .first()
+        .attr('href') || null,
   }
   const releaseYear = $('.manga-info__release').first().text().match(/\d+/)?.[0]
   const status = $('.novels-detail-right > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2)').text()
@@ -52,7 +54,7 @@ export const getDetailedManga = async (id: string) => {
     .trim()
     .replace(/\s{2,}/g, ' ')
 
-  const cover = $('.manga-info__img > img').attr('src')
+  const cover = $('.manga-info__img > img').attr('src') || null
   const chapters = _.flatten(getChapters($))
 
   return {
