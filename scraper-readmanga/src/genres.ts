@@ -9,7 +9,7 @@ export const getAllGenres = async (): Promise<MangaGenre[]> => {
   return $('li.active > ul:nth-child(2)')
     .map((index, item) => {
       const link = $(item).find('a')
-      return { name: link.text(), link: link.attr('href') }
+      return { name: link.text() || null, link: link.attr('href') || null }
     })
     .toArray()
 }
