@@ -18,3 +18,9 @@ export interface ScrapedDetailedManga {
     link: string | null
   }[]
 }
+
+export interface SearchedManga {
+  name: string
+  link: string
+  description: string
+}
