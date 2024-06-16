@@ -1,5 +1,6 @@
-export type * from './types';
+export type * from '../types/index.d.ts'
 
-export { getMangaDetails } from './mangaread/details.js';
-export { getMangaFeed, getTopMangaList, search } from './mangaread/list.js';
-export { getChapterImages } from './mangaread/chapter.js';
+export { getDetailedManga } from './detailed.js'
+export { getAllGenres } from './genres.js'
+export { search } from './search.js'
+export { getFrames } from './frames.js'

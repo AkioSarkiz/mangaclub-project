@@ -1,74 +1,43 @@
 {
-  "name": "mangaland-scraper",
-  "version": "0.7.1",
-  "description": "The scraper for the mangaland project",
-  "main": "./dist/cjs/index.js",
-  "types": "./dist/cjs/types/index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
-  "exports": {
-    ".": {
-      "require": {
-        "default": "./dist/cjs/index.js",
-        "types": "./dist/cjs/index.d.ts"
-      },
-      "import": {
-        "default": "./dist/index.mjs",
-        "types": "./dist/index.d.ts"
-      }
-    }
-  },
+  "name": "scraper-read-manga",
+  "version": "1.0.0",
+  "description": "The scraper of readmanga website",
+  "main": "./dist/index.js",
+  "type": "module",
   "scripts": {
-    "clean": "rm -rf ./dist",
-    "tsup": "tsup --tsconfig ./tsconfig.esm.json",
-    "___build": "npm run clean && npm run build:esm && npm run build:cjs",
-    "___build:esm": "tsc -p ./tsconfig.esm.json",
-    "___build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "build": "tsc",
     "test": "vitest run",
-    "coverage": "vitest run --coverage",
-    "eslint-fix": "eslint --fix ."
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AkioSarkiz/mangaland-project.git"
+    "url": "git+https://github.com/AkioSarkiz/mangaclub-project.git"
   },
   "keywords": [
-    "mangaland",
-    "manga",
-    "reader",
-    "manga",
-    "api"
+    "scraper",
+    "readmanga"
   ],
   "author": "Dmytro Laptiev <akiosarkiz@gmail.com>",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AkioSarkiz/mangaland-project/issues"
+    "url": "https://github.com/AkioSarkiz/mangaclub-project/issues"
   },
-  "homepage": "https://github.com/AkioSarkiz/mangaland-project#readme",
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.5.0",
-    "@typescript-eslint/parser": "^7.5.0",
-    "axios": "^1.6.8",
-    "cheerio": "^1.0.0-rc.12",
-    "eslint": "^8.57.0",
-    "tsc-alias": "^1.8.9",
-    "tsup": "^8.0.2",
-    "url-join": "^5.0.0"
-  },
+  "homepage": "https://github.com/AkioSarkiz/mangaclub-project#readme",
   "devDependencies": {
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@stylistic/eslint-plugin": "^1.7.0",
-    "@vitest/coverage-istanbul": "^1.5.1",
-    "rollup": "^4.17.2",
-    "typescript": "^5.4.4",
-    "vitest": "^1.4.0"
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.13",
+    "vitest": "^1.6.0"
   },
   "volta": {
-    "node": "20.12.1",
-    "npm": "10.5.1"
+    "node": "21.7.3",
+    "npm": "10.8.1"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.17.5",
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0-rc.12",
+    "eslint": "^9.4.0",
+    "lodash": "^4.17.21"
   }
 }

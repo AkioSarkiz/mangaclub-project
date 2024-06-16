@@ -1,10 +1,11 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    testTimeout: 10_000,
+    globals: true,
+    environment: 'node',
     coverage: {
-      provider: 'istanbul', // or 'v8'
+      reporter: ['text', 'json', 'html'],
     },
   },
 });

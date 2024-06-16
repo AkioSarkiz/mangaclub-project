@@ -23,6 +23,7 @@
     "pg": "^8.11.5",
     "postgres": "^3.4.4",
     "redis": "^4.6.13",
+    "scraper-read-manga": "^1.0.0",
     "winston": "^3.13.0"
   },
   "devDependencies": {
