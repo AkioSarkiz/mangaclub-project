@@ -4,7 +4,7 @@ export interface MangaFrame {
 }
 
 export interface MangaChapter {
-  id: number;
+  id: string;
   title: string;
   link: string;
   name?: string;
@@ -12,7 +12,7 @@ export interface MangaChapter {
 }
 
 export interface Manga {
-  id: number;
+  id: string;
   title: string;
   cover: string;
   description: string;

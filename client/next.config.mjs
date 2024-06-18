@@ -13,7 +13,13 @@ const nextConfig = {
         hostname: "www.mangaread.org",
         port: "",
         pathname: "/**",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "readmanga.app",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

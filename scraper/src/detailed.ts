@@ -54,7 +54,7 @@ export const getDetailedManga = async (id: string): Promise<ScrapedDetailedManga
     .trim()
     .replace(/\s{2,}/g, ' ')
 
-  const cover = $('.manga-info__img > img').attr('src') || null
+  const cover = $('.novels-detail-left > img:nth-child(1)').attr('src') || null
   const chapters = _.flatten(getChapters($))
 
   return {

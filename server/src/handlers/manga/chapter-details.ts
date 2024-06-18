@@ -1,16 +1,15 @@
 import { HonoBase } from 'hono/hono-base';
 import { db } from '../../db/connection.js';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { MangaChapters } from '../../db/schema.js';
 
 export const registerChapterList = (mangaRouter: HonoBase) => {
-  mangaRouter.get('/:externalId/chapters/:title', async (c) => {
-    const externalId = c.req.param('externalId');
-    const chapterId = c.req.param('title');
-    const externalMangaChapterId = `https://www.mangaread.org/manga/${externalId}/${chapterId}/`;
+  mangaRouter.get('/:externalMangaId/chapters/:externalChapterId', async (c) => {
+    const externalMangaId = c.req.param('externalMangaId');
+    const externalChapterId = c.req.param('externalChapterId');
 
     const chapter = await db.query.MangaChapters.findFirst({
-      where: eq(MangaChapters.externalId, externalMangaChapterId),
+      where: and(eq(MangaChapters.id, externalChapterId), eq(MangaChapters.mangaId, externalMangaId)),
       with: {
         frames: true,
       },

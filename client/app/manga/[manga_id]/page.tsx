@@ -16,17 +16,26 @@ const getData = async (params: GetDataProps) => {
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}`
   );
 
-  return { manga: data, mangaId: params.manga_id };
+  return { manga: data };
+};
+
+const generateChapterLink = (
+  mangaId: string | null,
+  chapterId: string | null
+) => {
+  if (!mangaId || !chapterId) {
+    return null;
+  }
+
+  return `/reader/${mangaId}/${chapterId}`;
 };
 
 const MangaInfoPage = ({ params }: { params: GetDataProps }) => {
   const [manga, setManga] = useState<Manga | null>(null);
-  const [mangaId, setMangaId] = useState<string | null>(null);
 
   useEffectOnce(() => {
-    getData(params).then(({ manga, mangaId }) => {
+    getData(params).then(({ manga }) => {
       setManga(manga);
-      setMangaId(mangaId);
     });
   });
 
@@ -51,9 +60,19 @@ const MangaInfoPage = ({ params }: { params: GetDataProps }) => {
           />
         </div>
 
-        <Link className="btn btn-primary" href={`/reader/${mangaId}/chapter-1`}>
-          Read now
-        </Link>
+        {manga.chapters && (
+          <Link
+            className="btn btn-primary"
+            href={
+              generateChapterLink(
+                manga.id,
+                manga.chapters[manga.chapters.length - 1].id
+              ) || ""
+            }
+          >
+            Read now
+          </Link>
+        )}
 
         <h3 className="text-xl font-semibold">{manga.title}</h3>
 
@@ -73,10 +92,11 @@ const MangaInfoPage = ({ params }: { params: GetDataProps }) => {
         </div>
 
         {manga.chapters.map((chapter) => {
-          const chapterId = chapter.title.replace(/\s/g, "-").toLowerCase();
-
           return (
-            <Link key={chapter.link} href={`/reader/${mangaId}/${chapterId}`}>
+            <Link
+              key={chapter.link}
+              href={generateChapterLink(manga.id, chapter.id) || ""}
+            >
               <span className="text-base hover:text-primary">
                 {chapter.title}
               </span>

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffectOnce } from "react-use";
+import { MangaChapter } from "@/types";
 
 interface Params {
   manga_id: string;
@@ -22,28 +23,23 @@ const loadImage = (url: string) => {
 };
 
 async function getData({ params }: { params: Params }) {
-  let nextChapterId: number | null = null;
+  let nextChapterId: string | null = null;
 
   const { data: mangaDetails } = await axios.get(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}`
   );
 
-  const { data } = await axios.get(
+  const { data: framesData } = await axios.get(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}/chapters/${params.chapter_id}`
   );
 
-  const reversedChapters = mangaDetails.chapters.reverse();
-  const currentManga = reversedChapters.findIndex((chapter: any) =>
-    chapter.link.includes(params.chapter_id)
-  );
+  mangaDetails.chapters.forEach((chapter: MangaChapter, index: number) => {
+    if (chapter.id === params.chapter_id && mangaDetails.chapters[index - 1]) {
+      nextChapterId = mangaDetails.chapters[index - 1].id;
+    }
+  });
 
-  if (currentManga !== -1 && currentManga + 1 < reversedChapters.length) {
-    nextChapterId = reversedChapters[currentManga + 1].title
-      .replace(/\s/g, "-")
-      .toLowerCase();
-  }
-
-  return { mangaFrames: data.frames, nextChapterId };
+  return { mangaFrames: framesData.frames, nextChapterId };
 }
 
 const ReaderPage = ({ params }: { params: Params }) => {
@@ -97,7 +93,7 @@ const ReaderPage = ({ params }: { params: Params }) => {
     });
   });
 
-  if (!nextChapterId) {
+  if (!mangaFrames.length) {
     return <div>loading...</div>;
   }
 

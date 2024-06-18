@@ -1,15 +1,18 @@
 import { HonoBase } from 'hono/hono-base';
 import { db } from '../../db/connection.js';
-import { eq } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
 import { Mangas } from '../../db/schema.js';
+import validator from 'validator';
 
 export const registerShow = (mangaRouter: HonoBase) => {
   mangaRouter.get('/:slug', async (c) => {
     const slug = c.req.param('slug');
-    const externalId = `https://www.mangaread.org/manga/${slug}/`;
+    const externalId = `https://rmanga.app/${slug}`;
+
+    console.log(externalId);
 
     const detailedManga = await db.query.Mangas.findFirst({
-      where: eq(Mangas.externalId, externalId),
+      where: or(eq(Mangas.externalId, externalId), eq(Mangas.id, slug).if(validator.isUUID(slug))),
       with: {
         chapters: true,
         genres: {

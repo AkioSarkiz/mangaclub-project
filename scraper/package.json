@@ -1,6 +1,6 @@
 {
   "name": "scraper-read-manga",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The scraper of readmanga website",
   "main": "./dist/index.js",
   "type": "module",
