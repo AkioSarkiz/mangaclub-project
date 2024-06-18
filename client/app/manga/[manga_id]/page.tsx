@@ -16,6 +16,8 @@ const getData = async (params: GetDataProps) => {
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}`
   );
 
+  data.chapters = data.chapters.sort((a: any, b: any) => a.index - b.index);
+
   return { manga: data };
 };
 
