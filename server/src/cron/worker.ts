@@ -123,28 +123,35 @@ for (const chapter of detailed.chapters) {
 
   logger.info(`Syncing chapter ${chapter.title} (${dbChapter.id}) for manga ${detailed.title} (${dbManga.id})`);
 
-  const frames = await getFrames(chapter.link);
+  try {
+    const frames = await getFrames(chapter.link);
 
-  for (const frame of frames) {
-    const dbChapterFrame = await db.query.MangaChapterFrames.findFirst({
-      where: and(eq(MangaChapterFrames.chapterId, dbChapter.id), eq(MangaChapterFrames.index, frame.index)),
-    });
+    for (const frame of frames) {
+      const dbChapterFrame = await db.query.MangaChapterFrames.findFirst({
+        where: and(eq(MangaChapterFrames.chapterId, dbChapter.id), eq(MangaChapterFrames.index, frame.index)),
+      });
 
-    if (dbChapterFrame) {
-      await db.update(MangaChapterFrames).set({ image: frame.src }).where(eq(MangaChapterFrames.id, dbChapterFrame.id));
-      logger.info(
-        `Updated frame ${frame.index} for chapter ${chapter.title} (${dbChapter.id}) for manga ${detailed.title} (${dbManga.id})`,
-      );
-      continue;
+      if (dbChapterFrame) {
+        await db
+          .update(MangaChapterFrames)
+          .set({ image: frame.src })
+          .where(eq(MangaChapterFrames.id, dbChapterFrame.id));
+        logger.info(
+          `Updated frame ${frame.index} for chapter ${chapter.title} (${dbChapter.id}) for manga ${detailed.title} (${dbManga.id})`,
+        );
+        continue;
+      }
+
+      await db.insert(MangaChapterFrames).values({
+        index: frame.index,
+        image: frame.src,
+        chapterId: dbChapter.id,
+      });
+
+      logger.info('created frame ' + frame.index + ' for chapter ' + chapter.title + ' (' + dbChapter.id + ')');
     }
-
-    await db.insert(MangaChapterFrames).values({
-      index: frame.index,
-      image: frame.src,
-      chapterId: dbChapter.id,
-    });
-
-    logger.info('created frame ' + frame.index + ' for chapter ' + chapter.title + ' (' + dbChapter.id + ')');
+  } catch (e) {
+    console.log(chapter);
   }
 }
 
