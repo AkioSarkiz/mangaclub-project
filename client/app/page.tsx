@@ -1,6 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import MangaCard from "@/components/MangaCard";
 import axios from "axios";
+import { useEffectOnce } from "react-use";
 
 async function getData() {
   const [{ data: feed }] = await Promise.all([
@@ -11,41 +14,46 @@ async function getData() {
   return { feed, nextPage };
 }
 
-const IndexPage = async () => {
+const IndexPage = () => {
+  const [feed, setFeed] = useState<any[]>([]);
+  const [nextPage, setNextPage] = useState<null | number>(null);
+  const [loadMoreButton, setLoadMoreButton] = useState({
+    isDisabled: false,
+  });
 
+  useEffectOnce(() => {
+    getData().then(({ feed, nextPage }) => {
+      setFeed(feed);
+      setNextPage(nextPage);
+    });
+  });
 
-  const { feed, nextPage } = await getData();
+  const loadMore = async () => {
+    setLoadMoreButton({
+      ...loadMoreButton,
+      isDisabled: true,
+    });
 
-  // const [loadMoreButton, setLoadMoreButton] = useState({
-  //   isDisabled: false,
-  // });
+    try {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/feed?p=${nextPage}`
+      );
 
-  // const loadMore = async () => {
-  //   setLoadMoreButton({
-  //     ...loadMoreButton,
-  //     isDisabled: true,
-  //   });
+      if (!data?.length) {
+        setNextPage(null);
+      }
 
-  //   try {
-  //     const { data } = await axios.get(
-  //       `${process.env.NEXT_PUBLIC_BACKEND_HOST}/feed?p=${nextPage}`
-  //     );
-
-  //     if (!data?.length) {
-  //       setNextPage(null);
-  //     }
-
-  //     setNextPage(nextPage! + 1);
-  //     setFeed([...feed, ...data]);
-  //   } catch (e) {
-  //     console.error(e);
-  //   } finally {
-  //     setLoadMoreButton({
-  //       ...loadMoreButton,
-  //       isDisabled: false,
-  //     });
-  //   }
-  // };
+      setNextPage(nextPage! + 1);
+      setFeed([...feed, ...data]);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadMoreButton({
+        ...loadMoreButton,
+        isDisabled: false,
+      });
+    }
+  };
 
   return (
     <>
@@ -56,7 +64,7 @@ const IndexPage = async () => {
           ))}
       </div>
 
-      {/* <div className="text-center mt-4 mb-3">
+      <div className="text-center mt-4 mb-3">
         {nextPage && (
           <button
             className="btn btn-primary"
@@ -66,7 +74,7 @@ const IndexPage = async () => {
             Load more
           </button>
         )}
-      </div> */}
+      </div>
     </>
   );
 };

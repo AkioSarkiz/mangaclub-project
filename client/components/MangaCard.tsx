@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 interface Manga {
@@ -22,9 +23,13 @@ const MangaCard = ({ manga }: Props) => {
     <div className="text-center">
       <div>
         <Link href={redirectLink}>
-          <img
-            className="rounded-md w-[110px] h-[150px] object-cover block m-auto"
+          <Image
+            width={110}
+            height={150}
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP0WwEAAUoA+OJtThAAAAAASUVORK5CYII="
+            className="rounded-md object-cover block m-auto"
             src={manga.cover}
+            placeholder="blur"
             alt="manga cover"
           />
         </Link>

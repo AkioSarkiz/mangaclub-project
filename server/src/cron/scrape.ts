@@ -13,7 +13,7 @@ let limitPool: Promise<any>[] = [];
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i).toUpperCase());
-const limit = pLimit(10);
+const limit = pLimit(20);
 
 for (const letter of alphabet) {
   const directory = await getDirectory(letter);
@@ -36,7 +36,6 @@ for (const letter of alphabet) {
     limitPool.push(limitedPromise);
   }
 
-  console.log('await for all');
   await Promise.all(limitPool);
   limitPool = [];
 

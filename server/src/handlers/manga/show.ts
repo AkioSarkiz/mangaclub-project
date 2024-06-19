@@ -9,8 +9,6 @@ export const registerShow = (mangaRouter: HonoBase) => {
     const slug = c.req.param('slug');
     const externalId = `https://rmanga.app/${slug}`;
 
-    console.log(externalId);
-
     const detailedManga = await db.query.Mangas.findFirst({
       where: or(eq(Mangas.externalId, externalId), eq(Mangas.id, slug).if(validator.isUUID(slug))),
       with: {

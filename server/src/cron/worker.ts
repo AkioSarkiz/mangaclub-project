@@ -8,6 +8,16 @@ import { logger } from '../logger.js';
 const { manga, sourceName } = workerData;
 const detailed = await getDetailedManga(manga.link);
 
+if (!detailed) {
+  logger.error('No detailed manga');
+  process.exit();
+}
+
+if (!detailed.cover) {
+  logger.error('No cover');
+  process.exit();
+}
+
 let source = await db.query.Sources.findFirst({
   where: eq(Sources.name, sourceName),
 });
@@ -151,7 +161,7 @@ for (const chapter of detailed.chapters) {
       logger.info('created frame ' + frame.index + ' for chapter ' + chapter.title + ' (' + dbChapter.id + ')');
     }
   } catch (e) {
-    console.log(chapter);
+    console.error(chapter);
   }
 }
 
