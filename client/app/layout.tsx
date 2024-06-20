@@ -5,6 +5,7 @@ import Container from "../components/Container";
 import Drawer from "../components/Drawer";
 import Navbar from "../components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import "./main.css";
 
@@ -20,6 +21,9 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const ANALYTICS_TRACKING_ID =
+    process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID || "";
+
   return (
     <html lang="en">
       <head>
@@ -56,6 +60,8 @@ const RootLayout = ({
           </Container>
         </ClerkProvider>
       </body>
+
+      <GoogleAnalytics gaId={ANALYTICS_TRACKING_ID} />
     </html>
   );
 };
