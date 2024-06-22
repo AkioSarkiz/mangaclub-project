@@ -1,10 +1,8 @@
 {
-  "id": "af7e9270-ea72-424e-8e1e-550cfb832305",
-  "prevId": "f7bda068-12e8-412a-83d4-b4f44c749e0d",
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "manga_chapters": {
+    "public.manga_chapters": {
       "name": "manga_chapters",
       "schema": "",
       "columns": {
@@ -112,7 +110,7 @@
         }
       }
     },
-    "manga_genres": {
+    "public.manga_genres": {
       "name": "manga_genres",
       "schema": "",
       "columns": {
@@ -156,7 +154,7 @@
         }
       }
     },
-    "manga_genres_to_mangas": {
+    "public.manga_genres_to_mangas": {
       "name": "manga_genres_to_mangas",
       "schema": "",
       "columns": {
@@ -213,7 +211,7 @@
       },
       "uniqueConstraints": {}
     },
-    "mangas": {
+    "public.mangas": {
       "name": "mangas",
       "schema": "",
       "columns": {
@@ -331,7 +329,7 @@
         }
       }
     },
-    "sources": {
+    "public.sources": {
       "name": "sources",
       "schema": "",
       "columns": {
@@ -379,8 +377,10 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "af7e9270-ea72-424e-8e1e-550cfb832305",
+  "prevId": "f7bda068-12e8-412a-83d4-b4f44c749e0d"
 }

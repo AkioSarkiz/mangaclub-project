@@ -4,7 +4,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "pg:generate": "drizzle-kit generate:pg",
+    "pg:generate": "drizzle-kit generate",
     "pg:migrate": "tsx ./src/scripts/migrate.ts",
     "pg:generate-custom": "drizzle-kit generate:pg --custom",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",

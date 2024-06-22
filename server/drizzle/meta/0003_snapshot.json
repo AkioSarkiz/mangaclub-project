@@ -1,10 +1,8 @@
 {
-  "id": "f7bda068-12e8-412a-83d4-b4f44c749e0d",
-  "prevId": "a03579a6-3d42-416d-956b-51b0e134f3e5",
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "manga_chapters": {
+    "public.manga_chapters": {
       "name": "manga_chapters",
       "schema": "",
       "columns": {
@@ -70,49 +68,49 @@
         "manga_chapters_source_id_sources_id_fk": {
           "name": "manga_chapters_source_id_sources_id_fk",
           "tableFrom": "manga_chapters",
-          "tableTo": "sources",
           "columnsFrom": [
             "source_id"
           ],
+          "tableTo": "sources",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "manga_chapters_manga_id_mangas_id_fk": {
           "name": "manga_chapters_manga_id_mangas_id_fk",
           "tableFrom": "manga_chapters",
-          "tableTo": "mangas",
           "columnsFrom": [
             "manga_id"
           ],
+          "tableTo": "mangas",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "manga_chapters_link_unique": {
           "name": "manga_chapters_link_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "link"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "manga_chapters_external_id_unique": {
           "name": "manga_chapters_external_id_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "external_id"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "manga_genres": {
+    "public.manga_genres": {
       "name": "manga_genres",
       "schema": "",
       "columns": {
@@ -149,14 +147,14 @@
       "uniqueConstraints": {
         "manga_genres_name_unique": {
           "name": "manga_genres_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "manga_genres_to_mangas": {
+    "public.manga_genres_to_mangas": {
       "name": "manga_genres_to_mangas",
       "schema": "",
       "columns": {
@@ -178,28 +176,28 @@
         "manga_genres_to_mangas_manga_id_mangas_id_fk": {
           "name": "manga_genres_to_mangas_manga_id_mangas_id_fk",
           "tableFrom": "manga_genres_to_mangas",
-          "tableTo": "mangas",
           "columnsFrom": [
             "manga_id"
           ],
+          "tableTo": "mangas",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "manga_genres_to_mangas_genre_id_manga_genres_id_fk": {
           "name": "manga_genres_to_mangas_genre_id_manga_genres_id_fk",
           "tableFrom": "manga_genres_to_mangas",
-          "tableTo": "manga_genres",
           "columnsFrom": [
             "genre_id"
           ],
+          "tableTo": "manga_genres",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -213,7 +211,7 @@
       },
       "uniqueConstraints": {}
     },
-    "mangas": {
+    "public.mangas": {
       "name": "mangas",
       "schema": "",
       "columns": {
@@ -309,29 +307,29 @@
         "mangas_source_id_sources_id_fk": {
           "name": "mangas_source_id_sources_id_fk",
           "tableFrom": "mangas",
-          "tableTo": "sources",
           "columnsFrom": [
             "source_id"
           ],
+          "tableTo": "sources",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "mangas_external_id_unique": {
           "name": "mangas_external_id_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "external_id"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "sources": {
+    "public.sources": {
       "name": "sources",
       "schema": "",
       "columns": {
@@ -368,10 +366,10 @@
       "uniqueConstraints": {
         "sources_name_unique": {
           "name": "sources_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     }
@@ -379,8 +377,10 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "f7bda068-12e8-412a-83d4-b4f44c749e0d",
+  "prevId": "a03579a6-3d42-416d-956b-51b0e134f3e5"
 }

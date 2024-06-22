@@ -1,5 +1,5 @@
 import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm';
-import { text, timestamp, pgTable, integer, uuid, primaryKey, date } from 'drizzle-orm/pg-core';
+import { text, timestamp, pgTable, integer, uuid, primaryKey, date, index } from 'drizzle-orm/pg-core';
 
 // --------------------------------------------
 
@@ -59,18 +59,26 @@ export const MangaChaptersRelations = relations(MangaChapters, ({ one, many }) =
 
 // --------------------------------------------
 
-export const MangaChapterFrames = pgTable('manga_chapter_frames', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  image: text('image').notNull().unique(),
-  index: integer('index').notNull(),
+export const MangaChapterFrames = pgTable(
+  'manga_chapter_frames',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    image: text('image').notNull().unique(),
+    index: integer('index').notNull(),
 
-  chapterId: uuid('chapter_id')
-    .notNull()
-    .references(() => MangaChapters.id),
+    chapterId: uuid('chapter_id')
+      .notNull()
+      .references(() => MangaChapters.id),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at'),
-});
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at'),
+  },
+  (table) => {
+    return {
+      mangaFrameChapterIndexAndIndexIdx: index('chapterIndex').on(table.chapterId, table.index),
+    };
+  },
+);
 
 export const MangaChapterFramesRelations = relations(MangaChapterFrames, ({ one }) => ({
   chapter: one(MangaChapters, {

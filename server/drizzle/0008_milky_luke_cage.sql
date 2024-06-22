@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS "chapterIndex" ON "manga_chapter_frames" USING btree (chapter_id,index);
