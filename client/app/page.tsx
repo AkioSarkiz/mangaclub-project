@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import MangaCard from "@/components/MangaCard";
 import axios from "axios";
 import { useEffectOnce } from "react-use";
+import { useAtom } from "jotai";
+import { Manga } from "@/types";
+import { mangaFeed } from "@/atoms/feed";
 
 async function getData() {
   const [{ data: feed }] = await Promise.all([
@@ -15,13 +18,16 @@ async function getData() {
 }
 
 const IndexPage = () => {
-  const [feed, setFeed] = useState<any[]>([]);
+  const [feed, setFeed] = useAtom<Manga[]>(mangaFeed);
   const [nextPage, setNextPage] = useState<null | number>(null);
   const [loadMoreButton, setLoadMoreButton] = useState({
     isDisabled: false,
   });
 
   useEffectOnce(() => {
+    // Skip if feed is not empty
+    if (feed.length > 0) return;
+
     getData().then(({ feed, nextPage }) => {
       setFeed(feed);
       setNextPage(nextPage);
