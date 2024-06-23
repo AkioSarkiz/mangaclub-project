@@ -1,6 +1,7 @@
 "use client";
 
 import { useManga } from "@/app/hooks/useManga";
+import { Manga } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,7 +21,9 @@ const generateChapterLink = (
 };
 
 const MangaInfoPage = ({ params }: { params: GetDataProps }) => {
-  const { manga, isLoading } = useManga(params.manga_id);
+  const { manga, isLoading }: { manga: Manga; isLoading: boolean } = useManga(
+    params.manga_id
+  );
 
   if (isLoading) {
     return (
