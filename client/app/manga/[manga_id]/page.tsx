@@ -1,25 +1,12 @@
 "use client";
 
-import { Manga } from "@/types";
-import axios from "axios";
+import { useManga } from "@/app/hooks/useManga";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { useEffectOnce } from "react-use";
 
 interface GetDataProps {
   manga_id: string;
 }
-
-const getData = async (params: GetDataProps) => {
-  const { data } = await axios.get(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${params.manga_id}`
-  );
-
-  data.chapters = data.chapters.sort((a: any, b: any) => a.index - b.index);
-
-  return { manga: data };
-};
 
 const generateChapterLink = (
   mangaId: string | null,
@@ -33,15 +20,9 @@ const generateChapterLink = (
 };
 
 const MangaInfoPage = ({ params }: { params: GetDataProps }) => {
-  const [manga, setManga] = useState<Manga | null>(null);
+  const { manga, isLoading } = useManga(params.manga_id);
 
-  useEffectOnce(() => {
-    getData(params).then(({ manga }) => {
-      setManga(manga);
-    });
-  });
-
-  if (!manga) {
+  if (isLoading) {
     return (
       <>
         <div>Loading...</div>
