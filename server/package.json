@@ -26,6 +26,8 @@
     "postgres": "^3.4.4",
     "redis": "^4.6.13",
     "scraper-read-manga": "^1.2.0",
+    "sitemap": "^8.0.0",
+    "url-join": "^5.0.0",
     "validator": "^13.12.0",
     "winston": "^3.13.0"
   },
@@ -46,6 +48,6 @@
   },
   "volta": {
     "node": "21.7.3",
-    "npm": "10.7.0"
+    "npm": "10.8.1"
   }
 }
