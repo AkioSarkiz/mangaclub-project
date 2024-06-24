@@ -40,7 +40,7 @@ async function generateSitemaps() {
 
     sitemapStream.pipe(writeStream);
     mangas.forEach((manga) => {
-      const sitemapItem: SitemapItemLoose = { url: urlJoin(frontUrl.origin, manga.id) };
+      const sitemapItem: SitemapItemLoose = { url: urlJoin(frontUrl.origin, 'manga', manga.id) };
 
       if (manga.updatedAt) {
         sitemapItem.lastmod = dayjs(manga.updatedAt).toISOString();
