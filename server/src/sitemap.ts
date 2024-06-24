@@ -29,7 +29,7 @@ async function generateSitemaps() {
   for (let i = 0; i < numberOfMangasChunks; i++) {
     const offset = i * CHUNK_SIZE;
     const mangas = await db.query.Mangas.findMany({ offset: offset, limit: CHUNK_SIZE });
-    const sitemapStream = new SitemapStream({ hostname: frontUrl.host });
+    const sitemapStream = new SitemapStream({ hostname: frontUrl.origin });
     const sitemapPath = path.join(__dirname, '../../public', `sitemap-${i + 1}.xml`);
 
     if (!existsSync(path.dirname(sitemapPath))) {
