@@ -10,8 +10,8 @@ import { count } from 'drizzle-orm';
 import urlJoin from 'url-join';
 import dayjs from 'dayjs';
 
-if (!process.env.APP_URL) {
-  throw Error('APP_URL is required');
+if (!process.env.APP_URL || !process.env.FRONT_URL) {
+  throw Error('APP_URL and FRONT_URL are required');
 }
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,6 +19,7 @@ const __dirname = path.dirname(__filename);
 
 const CHUNK_SIZE = 30_000;
 const appUrl = new URL(process.env.APP_URL);
+const frontUrl = new URL(process.env.FRONT_URL);
 
 async function generateSitemaps() {
   const totalMangas = await db.select({ count: count() }).from(Mangas);
@@ -28,7 +29,7 @@ async function generateSitemaps() {
   for (let i = 0; i < numberOfMangasChunks; i++) {
     const offset = i * CHUNK_SIZE;
     const mangas = await db.query.Mangas.findMany({ offset: offset, limit: CHUNK_SIZE });
-    const sitemapStream = new SitemapStream({ hostname: appUrl.host });
+    const sitemapStream = new SitemapStream({ hostname: frontUrl.host });
     const sitemapPath = path.join(__dirname, '../../public', `sitemap-${i + 1}.xml`);
 
     if (!existsSync(path.dirname(sitemapPath))) {
@@ -39,7 +40,7 @@ async function generateSitemaps() {
 
     sitemapStream.pipe(writeStream);
     mangas.forEach((manga) => {
-      const sitemapItem: SitemapItemLoose = { url: urlJoin(appUrl.origin, manga.id) };
+      const sitemapItem: SitemapItemLoose = { url: urlJoin(frontUrl.origin, manga.id) };
 
       if (manga.updatedAt) {
         sitemapItem.lastmod = dayjs(manga.updatedAt).toISOString();
@@ -56,7 +57,7 @@ async function generateSitemaps() {
   }
 
   // Generate Sitemap Index
-  const sitemapIndexStream = new SitemapStream({ hostname: `https://${appUrl.host}` });
+  const sitemapIndexStream = new SitemapStream({ hostname: `https://${frontUrl.host}` });
   const sitemapIndexPath = path.join(__dirname, '../../public', 'sitemap-index.xml');
   const indexWriteStream = createWriteStream(sitemapIndexPath);
 
