@@ -7,7 +7,6 @@ import { client, db } from './db/connection.js';
 import { fileURLToPath } from 'url';
 import { Mangas } from './db/schema.js';
 import { count } from 'drizzle-orm';
-import urlJoin from 'url-join';
 import dayjs from 'dayjs';
 
 if (!process.env.APP_URL || !process.env.FRONT_URL) {
@@ -53,7 +52,7 @@ async function generateSitemaps() {
 
     await streamToPromise(sitemapStream);
 
-    sitemapIndexUrls.push(`https://${appUrl.host}/sitemaps/sitemap-${i + 1}.xml`);
+    sitemapIndexUrls.push(`https://${appUrl.host}/data/sitemap-${i + 1}.xml`);
   }
 
   // Generate Sitemap Index
