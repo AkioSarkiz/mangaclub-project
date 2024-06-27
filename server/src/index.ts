@@ -41,6 +41,10 @@ app.use(trimTrailingSlash());
 
 app.route('manga', mangaRouter);
 
+app.get('/robots.txt', (c) => {
+  return c.text('User-Agent: *\nDisallowAllow: /');
+});
+
 console.log(`Server is running on port ${port}`);
 
 process.on('SIGINT', function () {
