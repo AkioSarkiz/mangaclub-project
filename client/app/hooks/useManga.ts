@@ -2,7 +2,7 @@ import { fetcher } from "@/app/lib/fetcher";
 import useSWR from "swr";
 
 export const useManga = (mangaId: string) => {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, } = useSWR(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/manga/${mangaId}`,
     // custom fetcher to transform data.
     (url: string) =>
