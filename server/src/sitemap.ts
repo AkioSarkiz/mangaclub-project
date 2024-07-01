@@ -17,7 +17,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const CHUNK_SIZE = 30_000;
-const appUrl = new URL(process.env.APP_URL);
 const frontUrl = new URL(process.env.FRONT_URL);
 
 async function generateSitemaps() {
@@ -52,7 +51,7 @@ async function generateSitemaps() {
 
     await streamToPromise(sitemapStream);
 
-    sitemapIndexUrls.push(`https://${appUrl.host}/data/sitemap-${i + 1}.xml`);
+    sitemapIndexUrls.push(`https://${frontUrl.host}/data/sitemap-${i + 1}.xml`);
   }
 
   // Generate Sitemap Index
